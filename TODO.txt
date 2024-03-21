@@ -1,0 +1,21 @@
+TODO:
+Zeitplan hochladen
+TRELLO BOARD
+
+In Doku erwähnen: Foreign Keys in Datenbank sind komisch >:o (Experten erklären, warum, wie, etc)
+Datenbank ERM Modell! (nur wichtige Tabellen einschreiben)
+
+Klar definieren welche Leistungen von mir sind und welche nicht (LEIS DB NICHT VON MIR ZB)
+
+
+
+Vor Präsentation: Powerpoint ausdrucken (2x) und den Experten geben! Und einmal hochladen
+
+Präsentation:
+Firmenvorstellung
+LEIS erklären
+Ausgangslage, warum?
+Wie funktioniert's was machts
+Demo
+
+

@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net" modified="2024-03-21T10:22:23.678Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0" etag="WPLbsEStCu9oEy5hraxn" version="24.0.7" type="device">
+  <diagram name="Page-1" id="3s_pY_4xj0ymgPuYfabB">
+    <mxGraphModel dx="871" dy="465" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="195" y="340" width="410" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-4" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="407.5" y="337" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-3" value="" style="triangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="392.5" y="325" width="15" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-5" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="390" y="745" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-6" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="400" y="735" width="15" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-7" value="Informieren" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="485" y="355" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-8" value="Planen" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="540" y="490" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-9" value="Entscheiden" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="485" y="650" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-10" value="Realisieren" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="210" y="650" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-11" value="Kontrollieren" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="140" y="490" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jHtRfXjvKm9xPeTE54PD-12" value="Auswerten" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="210" y="355" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

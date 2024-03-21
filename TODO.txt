@@ -1,11 +1,7 @@
 TODO:
-Zeitplan hochladen
-TRELLO BOARD
+Klassendiagramm
 
-In Doku erwähnen: Foreign Keys in Datenbank sind komisch >:o (Experten erklären, warum, wie, etc)
-Datenbank ERM Modell! (nur wichtige Tabellen einschreiben)
 
-Klar definieren welche Leistungen von mir sind und welche nicht (LEIS DB NICHT VON MIR ZB)
 
 
 

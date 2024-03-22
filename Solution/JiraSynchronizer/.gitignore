@@ -1,1 +1,8 @@
-.vs/*
+.vs/
+.idea/
+[Bb]in/
+[Oo]bj/
+bin/
+obj/
+/node_modules
+/wwwroot/node_modules

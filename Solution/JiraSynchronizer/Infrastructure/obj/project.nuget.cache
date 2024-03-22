@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "elQWVnzEtuH9g8s1qqAmWwQLnN827YbEnLjktD91K6bT470Y0hVhaK0+4RCKqklUTPBFkzkYLhgwwxdWz0zuhA==",
+  "dgSpecHash": "1Hhi4FfizR/EBZBB9ezkkm4J43V8unaljYy/KSGajQ0LY3nMONZUkVBd2drzv5dQSfJR2LnHJP4rRRoU915rag==",
   "success": true,
   "projectFilePath": "H:\\IPA\\Solution\\JiraSynchronizer\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\sil\\.nuget\\packages\\ardalis.specification\\8.0.0\\ardalis.specification.8.0.0.nupkg.sha512",
     "C:\\Users\\sil\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\sil\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\sil\\.nuget\\packages\\hashids.net\\1.7.0\\hashids.net.1.7.0.nupkg.sha512",
     "C:\\Users\\sil\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\sil\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\sil\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.5\\microsoft.data.sqlclient.5.1.5.nupkg.sha512",

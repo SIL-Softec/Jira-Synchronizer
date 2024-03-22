@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "m/6F9GYax5cFYCHQRqdmyLqlANxdonZQH83o8Dg8PeHjA2B30iv4HJ1/HKGkX1W4fBmfjep2ePg8jawj2kj+Ig==",
+  "dgSpecHash": "EndkIJfCN6Xwcd8HbGtzvHRkoRM1WrktVDVLH1IS+yx9SHnjl196T9vc2As6kKEK4wm/zE70iru4T7QjmFoEzw==",
   "success": true,
   "projectFilePath": "H:\\IPA\\Solution\\JiraSynchronizer\\Core\\Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\sil\\.nuget\\packages\\ardalis.specification\\8.0.0\\ardalis.specification.8.0.0.nupkg.sha512",
+    "C:\\Users\\sil\\.nuget\\packages\\hashids.net\\1.7.0\\hashids.net.1.7.0.nupkg.sha512"
+  ],
   "logs": []
 }

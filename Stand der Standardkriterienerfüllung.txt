@@ -1,0 +1,47 @@
+Standardkriterien
+- A1:  Projektmanagement und Planung
+	Y
+- A2:  Wissensbeschaffung
+	Y
+- A3:  Zeitplan
+	Y
+- A4:  Konzeptionelle Umsetzung
+	~
+- A5:  Projektumfeld: Systemgrenzen / Schnittstellen zur Aussenwelt
+	Y
+- A6:  Testkonzept
+	N
+- A7:  Leistungsfähigkeit
+	Y
+- A8:  Selbstständiges Arbeiten
+	Y
+- A9:  Fachkenntnisse und Anwendungskompetenz
+	Basically luck
+- A10: Anwendung der Fachsprache
+	~
+- A11: Arbeis- und Fachmethodik
+	Y
+- A12: Organisation der Arbeitsergebnisse
+	Y
+- A13: IPA-Erfüllungsgrad
+	N
+- B1:  Kurzfassung des IPA-Berichtes
+	N
+- B2:  Führung des Arbeitsjournals
+	~
+- B3:  Reflexionsfähigkeit
+	Y
+- B4: Gliederung
+	Y
+- B5: Prägnanz
+	~
+- B6:  Formale Vollständigkeit des IPA-Berichts
+	Y
+- B7:  Sprachlicher Ausdruck und Stil / Rechtschreibung und Grammatik
+	Basically luck
+- B8:  Darstellung
+	~
+- B9:  Grafiken, Bilder, Diagramme und Tabellen
+	~
+- B10: Durchführung und Auswertung der Tests
+	N

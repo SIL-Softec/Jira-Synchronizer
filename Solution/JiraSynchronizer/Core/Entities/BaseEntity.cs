@@ -1,11 +1,9 @@
-﻿namespace JiraSynchronizer.Core.Entities;
+﻿using JiraSynchronizer.Core.Interfaces.Repositories;
 
-public class BaseEntity
+namespace JiraSynchronizer.Core.Entities;
+
+public class BaseEntity : IBaseEntity
 {
     public virtual int Id { get; set; }
-    public virtual DateTime? ErfTime { get; set; }
-    public virtual string? ErfUser { get; set; }
-    public virtual DateTime? MutTime { get; set; }
-    public virtual string? MutUser{ get; set; }
 }
 

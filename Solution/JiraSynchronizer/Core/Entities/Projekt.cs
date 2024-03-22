@@ -41,4 +41,8 @@ public class Projekt : BaseEntity
     public int? BudgetLevel { get; set; }
     public string? Accounting { get; set; }
     public int? Rapporting { get; set; }
+    public virtual DateTime? ErfTime { get; set; }
+    public virtual string? ErfUser { get; set; }
+    public virtual DateTime? MutTime { get; set; }
+    public virtual string? MutUser { get; set; }
 }

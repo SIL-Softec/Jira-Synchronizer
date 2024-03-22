@@ -18,4 +18,8 @@ public class Leistungserfassung : BaseEntity
     public decimal? FrozenStundensatz { get; set; }
     public int? Session { get; set; }
     public decimal? StundenKorrigiert { get; set; }
+    public virtual DateTime? ErfTime { get; set; }
+    public virtual string? ErfUser { get; set; }
+    public virtual DateTime? MutTime { get; set; }
+    public virtual string? MutUser { get; set; }
 }

@@ -1,6 +1,8 @@
-﻿namespace JiraSynchronizer.Core.Entities;
+﻿using JiraSynchronizer.Core.Interfaces;
 
-public class Whitelist
+namespace JiraSynchronizer.Core.Entities;
+
+public class Whitelist : BaseEntity
 {
     public int Id { get; set; }
     public int ProjektId { get; set; }

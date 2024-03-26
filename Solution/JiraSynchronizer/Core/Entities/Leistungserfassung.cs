@@ -6,7 +6,7 @@ public class Leistungserfassung : BaseEntity
     public int MitarbeiterId { get; set; }
     public int LeistungsArtId { get; set; }
     public int ZeitklasseId { get; set; }
-    public string JiraBuchungId { get; set; }
+    public long JiraBuchungId { get; set; }
     public DateTime Beginn { get; set; }
     public DateTime Ende { get; set; }
     public decimal? Stunden { get; set; }

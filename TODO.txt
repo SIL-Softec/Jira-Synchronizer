@@ -1,5 +1,6 @@
 TODO:
-
+testen ob daten schon verbucht wurden
+daten verbuchen (dev modus)
 
 
 

@@ -12,6 +12,8 @@ public class WorklogViewModel
     public DateTime Started { get; set; }
     public int TimeSpentSeconds { get; set; }
     public string Comment { get; set; }
-    public int JiraBuchungId { get; set; }
+    public long JiraBuchungId { get; set; }
+    public string JiraProjekt { get; set; }
     public bool IsAuthorized { get; set; }
+    public bool ExistsOnDatabase { get; set; } = false;
 }

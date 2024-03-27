@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JiraSynchronizer.Core.Entities;
+namespace JiraSynchronizer.Application.ViewModels;
 
-public class ProjektMitarbeiter : BaseEntity
+public class ProjektMitarbeiterViewModel
 {
     public int ProjektId { get; set; }
     public int MitarbeiterId { get; set; }

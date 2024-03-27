@@ -1,9 +1,11 @@
-﻿using JiraSynchronizer.Core.Interfaces.Repositories;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace JiraSynchronizer.Core.Entities;
 
-public class BaseEntity : IBaseEntity
+public class BaseEntity
 {
-    public virtual int Id { get; set; }
 }
-

@@ -1,4 +1,5 @@
-﻿using JiraSynchronizer.Core.Dto;
+﻿using JiraSynchronizer.Core.Entities;
+using JiraSynchronizer.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JiraSynchronizer.Core.Services;
+namespace JiraSynchronizer.Infrastructure.Data;
 
-public class JiraService
+public class JiraRepository : IJiraRepository
 {
     static HttpClient client = new HttpClient();
     static string authorization = ConfigurationManager.AppSettings["api_token"] ?? "Not Found";
+    static readonly string baseUrl = "https://softec-swe.atlassian.net/rest/api/3";
 
-    public async Task<List<string>> GetIssues(string jiraProject)
+    public async Task<List<Issue>> GetIssuesAsync(string jiraProject)
     {
         if (authorization == "Not Found") throw new UnauthorizedAccessException();
 
         // Generate Request URL
-        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://softec-swe.atlassian.net/rest/api/3/search?jql=project={jiraProject}&maxResults=1000");
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/search?jql=project={jiraProject}&maxResults=1000");
 
         // Set Authorization Header
         request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authorization)));
@@ -34,22 +36,24 @@ public class JiraService
         dynamic jsonIssues = jsonObject.issues;
 
         // Fill issue list according to json objects
-        List<string> issues = new List<string>();
+        List<Issue> issues = new List<Issue>();
         foreach (dynamic issue in jsonIssues)
         {
-            string key = issue.key;
-            issues.Add(key);
+            issues.Add(new Issue()
+            {
+                IssueName = issue.key
+            });
         }
 
         return issues;
     }
 
-    public async Task<List<WorklogDto>> GetWorklogs(string issueName)
+    public async Task<List<Worklog>> GetWorklogsAsync(string issueName)
     {
         if (authorization == "Not Found") throw new UnauthorizedAccessException();
 
         // Generate Request URL
-        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://softec-swe.atlassian.net/rest/api/3/issue/{issueName}/worklog");
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/issue/{issueName}/worklog");
 
         // Set Authorization Header
         request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authorization)));
@@ -63,7 +67,7 @@ public class JiraService
         dynamic jsonObject = JsonConvert.DeserializeObject(responseJson);
         dynamic jsonWorklogs = jsonObject.worklogs;
 
-        List<WorklogDto> worklogDtos = new List<WorklogDto>();
+        List<Worklog> worklogs = new List<Worklog>();
 
         if (jsonWorklogs.Count > 0)
         {
@@ -73,7 +77,7 @@ public class JiraService
                 DateTime worklogStarted = (DateTime)jsonWorklog.started;
                 if (worklogStarted >= sevenDaysAgo)
                 {
-                    WorklogDto worklogDto = new WorklogDto()
+                    Worklog worklog = new Worklog()
                     {
                         Email = jsonWorklog.author.emailAddress,
                         Started = worklogStarted,
@@ -84,14 +88,14 @@ public class JiraService
                     {
                         if (jsonWorklog.comment.content.Count > 0)
                         {
-                            worklogDto.Comment = jsonWorklog.comment.content[0].content[0].text;
+                            worklog.Comment = jsonWorklog.comment.content[0].content[0].text;
                         }
                     }
-                    worklogDtos.Add(worklogDto);
+                    worklogs.Add(worklog);
                 }
             }
         }
 
-        return worklogDtos;
+        return worklogs;
     }
 }

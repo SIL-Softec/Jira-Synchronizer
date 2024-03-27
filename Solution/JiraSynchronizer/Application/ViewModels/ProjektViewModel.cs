@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JiraSynchronizer.Core.Interfaces.Repositories;
+namespace JiraSynchronizer.Application.ViewModels;
 
-public interface IBaseEntity
+public class ProjektViewModel
 {
     public int Id { get; set; }
+    public bool DefaultVerrechenbar { get; set; }
 }

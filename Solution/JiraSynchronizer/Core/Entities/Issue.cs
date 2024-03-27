@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace JiraSynchronizer.Core.Entities;
 
-public class ProjektMitarbeiter : BaseEntity
+public class Issue : BaseEntity
 {
-    public int ProjektId { get; set; }
-    public int MitarbeiterId { get; set; }
+    public string IssueName { get; set; }
+    public List<Worklog> Worklogs { get; set; }
 }

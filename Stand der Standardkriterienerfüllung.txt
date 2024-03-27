@@ -19,7 +19,7 @@ Standardkriterien
 	Basically luck
 - A10: Anwendung der Fachsprache
 	~
-- A11: Arbeis- und Fachmethodik
+- A11: Arbeits- und Fachmethodik
 	Y
 - A12: Organisation der Arbeitsergebnisse
 	Y

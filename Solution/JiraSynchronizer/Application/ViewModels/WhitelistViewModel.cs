@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JiraSynchronizer.Core.Entities;
+namespace JiraSynchronizer.Application.ViewModels;
 
-public class ProjektMitarbeiter : BaseEntity
+public class WhitelistViewModel
 {
     public int ProjektId { get; set; }
-    public int MitarbeiterId { get; set; }
+    public string JiraProjectName { get; set; }
 }

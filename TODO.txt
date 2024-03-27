@@ -1,6 +1,7 @@
 TODO:
-testen ob daten schon verbucht wurden
-daten verbuchen (dev modus)
+- log fertig mache
+- TESTS!!!
+- dev modus
 
 
 

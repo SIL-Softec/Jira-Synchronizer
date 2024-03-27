@@ -1,5 +1,6 @@
 ﻿using JiraSynchronizer.Core.Entities;
-using JiraSynchronizer.Core.Interfaces.Repositories;
+using JiraSynchronizer.Core.Interfaces;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,26 @@ using System.Threading.Tasks;
 
 namespace JiraSynchronizer.Infrastructure.Data;
 
-public class WhitelistRepository : AsyncRepository<Whitelist>, IWhitelistRepository
+public class WhitelistRepository : EfRepository<Whitelist>, IDatabaseRepository<Whitelist>
 {
-    protected readonly JiraSynchronizerContext _dbContext;
-    public WhitelistRepository(JiraSynchronizerContext dbContext) : base(dbContext)
+    public WhitelistRepository(SqlConnection connection) : base(connection) { }
+
+    public List<Whitelist> ListAll()
     {
-        _dbContext = dbContext;
+        SqlCommand getAllWhitelists = new SqlCommand("SELECT WHL_PRJ_ID, WHL_JIRA_PROJECT_NAME FROM T_WHITELIST;", Connection);
+        SqlDataReader reader = getAllWhitelists.ExecuteReader();
+        List<Whitelist> whitelist = new List<Whitelist>();
+
+        while (reader.Read())
+        {
+            whitelist.Add(new Whitelist()
+            {
+                ProjektId = (int)reader[0],
+                JiraProjectName = reader[1].ToString()
+            });
+        }
+
+        reader.Close();
+        return whitelist;
     }
 }

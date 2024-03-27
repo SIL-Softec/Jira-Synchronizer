@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JiraSynchronizer.Core.Interfaces.Repositories;
+namespace JiraSynchronizer.Core.Interfaces;
 
-public interface IZeitklasseRepository : IAsyncRepository<Zeitklasse>
+public interface IDatabaseRepository<T> where T : BaseEntity
 {
+    List<T> ListAll();
+    void AddAll(List<T> entries);
 }

@@ -2,6 +2,7 @@
 using JiraSynchronizer.Application.ViewModels;
 using JiraSynchronizer.Core.Enums;
 using JiraSynchronizer.Core.Interfaces;
+using JiraSynchronizer.Core.Services;
 using JiraSynchronizer.Infrastructure.Data;
 using Microsoft.Data.SqlClient;
 using System;
@@ -15,8 +16,6 @@ public class Program
     private readonly static string defaultConnection = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
     // Eine SQL Connection wird für alle Services erstellt
     private static SqlConnection sqlConnection = new SqlConnection(defaultConnection);
-    // Pfad zum Logfile
-    private readonly static string path = @".\log.txt";
     static async Task Main(string[] args)
     {
         sqlConnection.Open();
@@ -28,10 +27,13 @@ public class Program
         ProjektMitarbeiterController projektMitarbeiterController = new ProjektMitarbeiterController(sqlConnection);
         ProjektController projektController = new ProjektController(sqlConnection);
 
+        // Instanz des logging services
+        LoggingService log = new LoggingService();
+
 
         // Initialise Log 
-        Log(LogCategory.LogfileInitialized, "Logfile initialized");
-        Log(LogCategory.ApplicationStarted, "Application started\n");
+        log.Log(LogCategory.LogfileInitialized, "Logfile initialized");
+        log.Log(LogCategory.ApplicationStarted, "Application started\n");
 
         // Whitelist wird von der Datenbank importiert und in JiraProjectViewModel übersetzt
         List<JiraProjectViewModel> jiraProjects = GenerateJiraProjects(whitelistController.GetAllWhitelists());
@@ -74,7 +76,7 @@ public class Program
                     if (worklog.IsAuthorized && !worklog.ExistsOnDatabase) worklogs.Add(worklog);
 
                     // Enthält ein worklog eine Leistung von >24h, wird eine Warnung in den Log geschrieben
-                    if (((double)worklog.TimeSpentSeconds) / 3600 > 24) Log(LogCategory.OvertimeWarning, $"User with Email {worklog.Email} worked over 24 hours on issue {issue.IssueName}, worklog starting at {worklog.Started}\n");
+                    if (((double)worklog.TimeSpentSeconds) / 3600 > 24) log.Log(LogCategory.OvertimeWarning, $"User with Email {worklog.Email} worked over 24 hours on issue {issue.IssueName}, worklog starting at {worklog.Started}\n");
                 }
             }
         }
@@ -85,10 +87,10 @@ public class Program
         // Worklogs werden in LeistungserfassungViewModels übertragen und auf der Datenbank als Leistungserfassungen gespeichert
         List<LeistungserfassungViewModel> leistungserfassungViewModels = GenerateLeistungserfassungViewModels(worklogs, userList, jiraProjects, projekte);
         leistungserfassungController.AddLeistungserfassungen(leistungserfassungViewModels);
-
+        log.Log(LogCategory.Success, "Data was successfully imported");
 
         sqlConnection.Close();
-        Log(LogCategory.ApplicationStopped, "Application stopped");
+        log.Log(LogCategory.ApplicationStopped, "Application stopped");
     }
 
     public static List<LeistungserfassungViewModel> GenerateLeistungserfassungViewModels(List<WorklogViewModel> worklogs, List<UserViewModel> userList, List<JiraProjectViewModel> jiraProjects, List<ProjektViewModel> projekte)
@@ -117,29 +119,6 @@ public class Program
         return leistungserfassungViewModels;
     }
 
-    public static void Log(LogCategory category, string message)
-    {
-        DateTime now = DateTime.Now;
-        if (category == LogCategory.LogfileInitialized)
-        {
-            if (!File.Exists(path))
-            {
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    DateTime logStart = DateTime.Now;
-                    sw.WriteLine($"[{logStart}]\tLogfile initialised\n");
-                }
-            }
-        } else
-        {
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine($"[{now}]\t[{(int)category}]\t{message}");
-            }
-        }
-
-    }
-
     public static List<JiraProjectViewModel> GenerateJiraProjects(List<WhitelistViewModel> whitelist)
     {
         List<JiraProjectViewModel> jiraProjects = new List<JiraProjectViewModel>();
@@ -156,17 +135,18 @@ public class Program
 
     public static bool IsAuthorized(List<UserViewModel> userList, List<ProjektMitarbeiterViewModel> projektMitarbeiterList, string email, int projectId)
     {
+        LoggingService log = new LoggingService();
         // Check if T_USER table contains a user with the given email adress
         if (!userList.Any(u => u.UniqueName == email))
         {
-            Log(LogCategory.UserNotFound, $"User with email {email} could not be found.");
+            log.Log(LogCategory.UserNotFound, $"User with email {email} could not be found.");
             return false;
         }
 
         // Check if TZ_PROJEKT_MITARBEITER contains a user with the id we got from T_USER and wether any of the entries with that id also contain the proper project id
         if (!projektMitarbeiterList.Any(pm => pm.MitarbeiterId == userList.First(u => u.UniqueName == email).MitarbeiterId && pm.ProjektId == projectId))
         {
-            Log(LogCategory.UserNotAuthorized, $"User with email {email} is not authorized to book on project with Id {projectId}.");
+            log.Log(LogCategory.UserNotAuthorized, $"User with email {email} is not authorized to book on project with Id {projectId}.");
             return false;
         }
 

@@ -19,6 +19,12 @@ public class ProjektMitarbeiterController : BaseController
         _databaseRepository = new ProjektMitarbeiterRepository(connection);
     }
 
+    // Alternate constructor to mock database repository in tests
+    public ProjektMitarbeiterController(IDatabaseRepository<ProjektMitarbeiter> databaseRepository, SqlConnection connection) : base(connection)
+    {
+        _databaseRepository = databaseRepository;
+    }
+
     public List<ProjektMitarbeiterViewModel> GetAllProjektMitarbeiters()
     {
         List<ProjektMitarbeiter> projektMitarbeiters = _databaseRepository.ListAll();

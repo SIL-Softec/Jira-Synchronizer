@@ -19,6 +19,12 @@ public class ProjektController : BaseController
         _databaseRepository = new ProjektRepository(connection);
     }
 
+    // Alternate constructor to mock database repository in tests
+    public ProjektController(IDatabaseRepository<Projekt> databaseRepository, SqlConnection connection) : base(connection)
+    {
+        _databaseRepository = databaseRepository;
+    }
+
     public List<ProjektViewModel> GetAllProjekte()
     {
         List<Projekt> projekte = _databaseRepository.ListAll();

@@ -19,6 +19,12 @@ public class LeistungserfassungController : BaseController
         _databaseRepository = new LeistungserfassungRepository(connection);
     }
 
+    // Alternate constructor to mock database repository in tests
+    public LeistungserfassungController(IDatabaseRepository<Leistungserfassung> databaseRepository, SqlConnection connection) : base(connection)
+    {
+        _databaseRepository = databaseRepository;
+    }
+
     public List<LeistungserfassungViewModel> GetAllLeistungserfassungen()
     {
         List<Leistungserfassung> leistungserfassungen = _databaseRepository.ListAll();

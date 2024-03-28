@@ -19,6 +19,12 @@ public class WhitelistController : BaseController
         _databaseRepository = new WhitelistRepository(connection);
     }
 
+    // Alternate constructor to mock database repository in tests
+    public WhitelistController(IDatabaseRepository<Whitelist> databaseRepository, SqlConnection connection) : base(connection)
+    {
+        _databaseRepository = databaseRepository;
+    }
+
     public List<WhitelistViewModel> GetAllWhitelists()
     {
         List<Whitelist> whitelists = _databaseRepository.ListAll();

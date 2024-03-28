@@ -1,10 +1,13 @@
 ﻿using JiraSynchronizer.Application.Controllers;
+using JiraSynchronizer.Application.Services;
 using JiraSynchronizer.Application.ViewModels;
 using JiraSynchronizer.Core.Enums;
 using JiraSynchronizer.Core.Interfaces;
 using JiraSynchronizer.Core.Services;
 using JiraSynchronizer.Infrastructure.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Configuration;
 
@@ -13,30 +16,47 @@ namespace JiraSynchronizer.Application;
 public class Program
 {
     // ConnectionString ist in App.config als "default" definiert
-    private readonly static string defaultConnection = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+    private readonly static string defaultConnection = System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
     // Eine SQL Connection wird für alle Services erstellt
     private static SqlConnection sqlConnection = new SqlConnection(defaultConnection);
     static async Task Main(string[] args)
     {
-        sqlConnection.Open();
+        // Configure appsettings
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false);
+        IConfigurationRoot config = builder.Build();
+        // Set development user if dev mode is enabled
+        bool isDevelopment = false;
+        int? devUser = null;
+        if (args.Length > 0 && (args[0] == "-dev" || args[0] == "-d"))
+        {
+            isDevelopment = true;
+            devUser = Int32.Parse(config.GetSection("DevUser").Value);
+        }
+
+        // Initialize Jira Controllers
         IssueController issueController = new IssueController();
         WorklogController worklogController = new WorklogController();
+        // Initialize Database Controllers
+        sqlConnection.Open();
         LeistungserfassungController leistungserfassungController = new LeistungserfassungController(sqlConnection);
         WhitelistController whitelistController = new WhitelistController(sqlConnection);
         UserController userController = new UserController(sqlConnection);
         ProjektMitarbeiterController projektMitarbeiterController = new ProjektMitarbeiterController(sqlConnection);
         ProjektController projektController = new ProjektController(sqlConnection);
 
-        // Instanz des logging services
-        LoggingService log = new LoggingService();
-
+        // Initialize Services
+        AuthorizationService authService = new AuthorizationService();
+        LoggingService logService = new LoggingService();
+        ViewModelService viewModelService = new ViewModelService();
 
         // Initialise Log 
-        log.Log(LogCategory.LogfileInitialized, "Logfile initialized");
-        log.Log(LogCategory.ApplicationStarted, "Application started\n");
+        logService.Log(LogCategory.LogfileInitialized, "Logfile initialized");
+        logService.Log(LogCategory.ApplicationStarted, "Application started\n");
 
         // Whitelist wird von der Datenbank importiert und in JiraProjectViewModel übersetzt
-        List<JiraProjectViewModel> jiraProjects = GenerateJiraProjects(whitelistController.GetAllWhitelists());
+        List<JiraProjectViewModel> jiraProjects = viewModelService.GenerateJiraProjectViewModels(whitelistController.GetAllWhitelists());
 
         // Alle issue keys der jeweiligen Projekte werden von der Jira REST API importiert
         foreach (JiraProjectViewModel project in jiraProjects)
@@ -53,7 +73,7 @@ public class Program
             }
         }
 
-        // Bei allen worklogs wird überprüft, ob der erfasste Benutzer berechtigt ist, auf das jeweilige Projekt zu buchen
+        // User und die Projekte auf welchen sie Berechtigungen haben werden importiert
         List<UserViewModel> userList = userController.GetAllUsers();
         List<ProjektMitarbeiterViewModel> projektMitarbeiterList = projektMitarbeiterController.GetAllProjektMitarbeiters();
 
@@ -68,7 +88,8 @@ public class Program
             {
                 foreach (WorklogViewModel worklog in issue.Worklogs)
                 {
-                    worklog.IsAuthorized = IsAuthorized(userList, projektMitarbeiterList, worklog.Email, project.LeisProjectId);
+                    worklog.IsAuthorized = authService.IsAuthorized(userList, projektMitarbeiterList, worklog.Email, project.LeisProjectId);
+                    if (isDevelopment) worklog.IsAuthorized = true;
                     worklog.ExistsOnDatabase = minimaleLeistungserfassungen.Any(ml => ml.JiraProjectId == worklog.JiraBuchungId);
                     worklog.JiraProjekt = project.ProjectName;
 
@@ -76,7 +97,7 @@ public class Program
                     if (worklog.IsAuthorized && !worklog.ExistsOnDatabase) worklogs.Add(worklog);
 
                     // Enthält ein worklog eine Leistung von >24h, wird eine Warnung in den Log geschrieben
-                    if (((double)worklog.TimeSpentSeconds) / 3600 > 24) log.Log(LogCategory.OvertimeWarning, $"User with Email {worklog.Email} worked over 24 hours on issue {issue.IssueName}, worklog starting at {worklog.Started}\n");
+                    if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(LogCategory.OvertimeWarning, $"User with Email {worklog.Email} worked over 24 hours on issue {issue.IssueName}, worklog starting at {worklog.Started}\n");
                 }
             }
         }
@@ -85,71 +106,11 @@ public class Program
         List<ProjektViewModel> projekte = projektController.GetAllProjekte();
 
         // Worklogs werden in LeistungserfassungViewModels übertragen und auf der Datenbank als Leistungserfassungen gespeichert
-        List<LeistungserfassungViewModel> leistungserfassungViewModels = GenerateLeistungserfassungViewModels(worklogs, userList, jiraProjects, projekte);
+        List<LeistungserfassungViewModel> leistungserfassungViewModels = viewModelService.GenerateLeistungserfassungViewModels(worklogs, userList, jiraProjects, projekte, devUser, isDevelopment);
         leistungserfassungController.AddLeistungserfassungen(leistungserfassungViewModels);
-        log.Log(LogCategory.Success, "Data was successfully imported");
+        logService.Log(LogCategory.Success, "Data was successfully imported");
 
         sqlConnection.Close();
-        log.Log(LogCategory.ApplicationStopped, "Application stopped");
-    }
-
-    public static List<LeistungserfassungViewModel> GenerateLeistungserfassungViewModels(List<WorklogViewModel> worklogs, List<UserViewModel> userList, List<JiraProjectViewModel> jiraProjects, List<ProjektViewModel> projekte)
-    {
-        List<LeistungserfassungViewModel> leistungserfassungViewModels = new List<LeistungserfassungViewModel>();
-        foreach(WorklogViewModel worklog in worklogs)
-        {
-            JiraProjectViewModel jiraProject = jiraProjects.FirstOrDefault(w => w.ProjectName == worklog.JiraProjekt);
-            int? projektId = jiraProject != null ? jiraProject.LeisProjectId : null;
-            if (projektId != null)
-            {
-                leistungserfassungViewModels.Add(new LeistungserfassungViewModel()
-                {
-                    ProjektId = projektId.Value,
-                    MitarbeiterId = userList.First(u => u.UniqueName == worklog.Email).MitarbeiterId,
-                    Beginn = worklog.Started,
-                    Ende = worklog.Started, // Worklogs haben nur ein Startdatum
-                    Stunden = (double)worklog.TimeSpentSeconds / 3600,
-                    Beschreibung = worklog.JiraProjekt,
-                    InternBeschreibung = worklog.Comment,
-                    Verrechenbar = projekte.First(p => p.Id == projektId).DefaultVerrechenbar == true,
-                    JiraProjectId = worklog.JiraBuchungId
-                });
-            }
-        }
-        return leistungserfassungViewModels;
-    }
-
-    public static List<JiraProjectViewModel> GenerateJiraProjects(List<WhitelistViewModel> whitelist)
-    {
-        List<JiraProjectViewModel> jiraProjects = new List<JiraProjectViewModel>();
-        foreach (var project in whitelist)
-        {
-            jiraProjects.Add(new JiraProjectViewModel
-            {
-                ProjectName = project.JiraProjectName,
-                LeisProjectId = project.ProjektId
-            });
-        }
-        return jiraProjects;
-    }
-
-    public static bool IsAuthorized(List<UserViewModel> userList, List<ProjektMitarbeiterViewModel> projektMitarbeiterList, string email, int projectId)
-    {
-        LoggingService log = new LoggingService();
-        // Check if T_USER table contains a user with the given email adress
-        if (!userList.Any(u => u.UniqueName == email))
-        {
-            log.Log(LogCategory.UserNotFound, $"User with email {email} could not be found.");
-            return false;
-        }
-
-        // Check if TZ_PROJEKT_MITARBEITER contains a user with the id we got from T_USER and wether any of the entries with that id also contain the proper project id
-        if (!projektMitarbeiterList.Any(pm => pm.MitarbeiterId == userList.First(u => u.UniqueName == email).MitarbeiterId && pm.ProjektId == projectId))
-        {
-            log.Log(LogCategory.UserNotAuthorized, $"User with email {email} is not authorized to book on project with Id {projectId}.");
-            return false;
-        }
-
-        return true;
+        logService.Log(LogCategory.ApplicationStopped, "Application stopped");
     }
 }

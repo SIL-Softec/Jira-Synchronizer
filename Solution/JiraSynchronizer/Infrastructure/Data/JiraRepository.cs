@@ -12,9 +12,9 @@ namespace JiraSynchronizer.Infrastructure.Data;
 
 public class JiraRepository : IJiraRepository
 {
-    static HttpClient client = new HttpClient();
-    static string authorization = ConfigurationManager.AppSettings["api_token"] ?? "Not Found";
-    static readonly string baseUrl = "https://softec-swe.atlassian.net/rest/api/3";
+    private static HttpClient client = new HttpClient();
+    private static string authorization = ConfigurationManager.AppSettings["api_token"] ?? "Not Found";
+    private static readonly string baseUrl = "https://softec-swe.atlassian.net/rest/api/3";
 
     public async Task<List<Issue>> GetIssuesAsync(string jiraProject)
     {

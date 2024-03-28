@@ -19,6 +19,12 @@ public class UserController : BaseController
         _databaseRepository = new UserRepository(connection);
     }
 
+    // Alternate constructor to mock database repository in tests
+    public UserController(IDatabaseRepository<User> databaseRepository, SqlConnection connection) : base(connection)
+    {
+        _databaseRepository = databaseRepository;
+    }
+
     public List<UserViewModel> GetAllUsers()
     {
         List<User> users = _databaseRepository.ListAll();

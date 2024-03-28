@@ -9,6 +9,6 @@ namespace JiraSynchronizer.Core.Interfaces;
 
 public interface IDatabaseRepository<T> where T : BaseEntity
 {
-    List<T> ListAll();
-    void AddAll(List<T> entries);
+    public List<T> ListAll();
+    public void AddAll(List<T> entries);
 }

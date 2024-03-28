@@ -1,7 +1,5 @@
 TODO:
-- log fertig mache
-- TESTS!!!
-- dev modus
+- TAG 6 ARBEITSRAPPORT
 
 
 

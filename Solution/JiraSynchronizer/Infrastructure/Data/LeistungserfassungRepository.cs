@@ -35,23 +35,23 @@ public class LeistungserfassungRepository : EfRepository<Leistungserfassung>, ID
         return leistungserfassungen;
     }
 
-    public void AddAll(List<Leistungserfassung> leistungserfassungDtos)
+    public void AddAll(List<Leistungserfassung> leistungserfassungen)
     {
-        if (leistungserfassungDtos.Count() == 0)
+        if (leistungserfassungen.Count() == 0)
         {
             return;
         }
         string sqlCommand = "INSERT INTO T_LEISTUNGSERFASSUNG (LEI_PRJ_ID, LEI_MIT_ID, LEI_LEA_ID, LEI_ZKL_ID, LEI_BEGINN, LEI_ENDE, LEI_STUNDEN, LEI_VERRECHENBAR, LEI_BESCHREIBUNG, LEI_INTERN_BESCHREIBUNG, LEI_MIA_SICHTBAR, LEI_JIRA_BUCHUNG_ID) VALUES ";
-        for (int i = 0; i < leistungserfassungDtos.Count(); i++)
+        for (int i = 0; i < leistungserfassungen.Count(); i++)
         {
             if (i != 0)
             {
                 sqlCommand += ", ";
             }
-            int verrechenbar = leistungserfassungDtos[i].Verrechenbar == true ? 1 : 0;
-            string beginnDate = leistungserfassungDtos[i].Beginn.ToString("yyyy-MM-dd hh:mm:ss");
-            string endeDate = leistungserfassungDtos[i].Ende.ToString("yyyy-MM-dd hh:mm:ss");
-            sqlCommand += $"({leistungserfassungDtos[i].ProjektId}, {leistungserfassungDtos[i].MitarbeiterId}, 10, 1, '{beginnDate}', '{endeDate}', {leistungserfassungDtos[i].Stunden}, {verrechenbar}, '{leistungserfassungDtos[i].Beschreibung}', '{leistungserfassungDtos[i].InternBeschreibung}', 1, {leistungserfassungDtos[i].JiraProjectId})";
+            int verrechenbar = leistungserfassungen[i].Verrechenbar == true ? 1 : 0;
+            string beginnDate = leistungserfassungen[i].Beginn.ToString("yyyy-MM-dd hh:mm:ss");
+            string endeDate = leistungserfassungen[i].Ende.ToString("yyyy-MM-dd hh:mm:ss");
+            sqlCommand += $"({leistungserfassungen[i].ProjektId}, {leistungserfassungen[i].MitarbeiterId}, 10, 1, '{beginnDate}', '{endeDate}', {leistungserfassungen[i].Stunden}, {verrechenbar}, '{leistungserfassungen[i].Beschreibung}', '{leistungserfassungen[i].InternBeschreibung}', 1, {leistungserfassungen[i].JiraProjectId})";
         }
         sqlCommand += ";";
         SqlCommand insertLeistungserfassungen = new SqlCommand(sqlCommand, Connection);

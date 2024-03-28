@@ -18,6 +18,12 @@ public class WorklogController
         _jiraRepository = new JiraRepository();
     }
 
+    // Alternate constructor to mock repository in tests
+    public WorklogController(IJiraRepository jiraRepository)
+    {
+        _jiraRepository = jiraRepository;
+    }
+
     public async Task<List<WorklogViewModel>> GetWorklogsAsync(string issueName)
     {
         List<Worklog> worklogs = await _jiraRepository.GetWorklogsAsync(issueName);

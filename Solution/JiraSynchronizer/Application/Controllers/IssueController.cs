@@ -18,6 +18,12 @@ public class IssueController
         _jiraRepository = new JiraRepository();
     }
 
+    // Alternate constructor to mock repository in tests
+    public IssueController(IJiraRepository jiraRepository)
+    {
+        _jiraRepository = jiraRepository;
+    }
+
     public async Task<List<IssueViewModel>> GetIssuesAsync(string projectName)
     {
         List<Issue> issues = await _jiraRepository.GetIssuesAsync(projectName);

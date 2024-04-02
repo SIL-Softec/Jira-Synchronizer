@@ -41,10 +41,20 @@ public class Program
             logService.Log(LogCategory.ApplicationStarted, "Applikation wurde gestartet\n");
 
             // Configure appsettings
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false);
-            IConfigurationRoot config = builder.Build();
+            IConfigurationRoot config;
+            try
+            {
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false);
+                config = builder.Build();
+            } catch
+            {
+                logService.Log(LogCategory.Error, "Datei \"appsettings.json\" konnte nicht gefunden werden");
+                logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
+                return;
+            }
+
             // Set development user if dev mode is enabled
             bool isDevelopment = false;
             int? devUser = null;
@@ -52,13 +62,12 @@ public class Program
             {
                 isDevelopment = true;
                 devUser = Int32.Parse(config.GetSection("DevUser").Value);
-                logService.Log(LogCategory.Information, $"Applikation läuft in Development Modus, Daten werden auf den Benutzer mit der Id {devUser} gespeichert\n");
+                logService.Log(LogCategory.Information, $"Applikation läuft in Development Modus, Daten werden auf den Benutzer mit der Id \"{devUser}\" gespeichert\n");
             }
             if (args.Length > 0 && args.Any(a => a != "-dev" && a != "-d"))
             {
-                logService.Log(LogCategory.Warning, "Die Applikation wurde mit ungültigen Argumenten aufgerufen\n");
+                logService.Log(LogCategory.Warning, "Applikation wurde mit ungültigen Argumenten aufgerufen\n");
             }
-
 
             // Initialize Jira Controllers
             IssueController issueController = new IssueController();
@@ -79,7 +88,7 @@ public class Program
             {
                 project.Issues = await issueController.GetIssuesAsync(project.ProjectName);
             }
-            logService.Log(LogCategory.Information, "Issues wurden erfolgreich geladen\n");
+            logService.Log(LogCategory.Success, "Issues wurden erfolgreich geladen\n");
 
             // Alle worklogs, jünger als sieben Tage, der jeweiligen Issues werden von der Jira REST API importiert
             foreach (JiraProjectViewModel project in jiraProjects)
@@ -89,7 +98,7 @@ public class Program
                     issue.Worklogs = await worklogController.GetWorklogsAsync(issue.IssueName);
                 }
             }
-            logService.Log(LogCategory.Information, "Worklogs wurden erfolgreich geladen\n");
+            logService.Log(LogCategory.Success, "Worklogs wurden erfolgreich geladen\n");
 
             // User und die Projekte auf welchen sie Berechtigungen haben werden importiert
             List<UserViewModel> userList = userController.GetAllUsers();
@@ -115,7 +124,7 @@ public class Program
                         if (worklog.IsAuthorized && !worklog.ExistsOnDatabase) worklogs.Add(worklog);
 
                         // Enthält ein worklog eine Leistung von >24h, wird eine Warnung in den Log geschrieben
-                        if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(LogCategory.OvertimeWarning, $"Benutzer mit der Email {worklog.Email} hat über 24 Stunden an Issue {issue.IssueName} gearbeitet, Eintrag mit Startdatum {worklog.Started}\n");
+                        if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(LogCategory.OvertimeWarning, $"Benutzer mit der Email \"{worklog.Email}\" hat über 24 Stunden an Issue \"{issue.IssueName}\" gearbeitet, Eintrag mit Startdatum \"{worklog.Started}\"\n");
                     }
                 }
             }

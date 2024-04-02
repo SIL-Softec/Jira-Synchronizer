@@ -17,14 +17,14 @@ public class AuthorizationService
         // Check if T_USER table contains a user with the given email adress
         if (!userList.Any(u => u.UniqueName == email))
         {
-            logService.Log(LogCategory.UserNotFound, $"User with email {email} could not be found.");
+            logService.Log(LogCategory.UserNotFound, $"Benutzer mit Email {email} konnte nicht gefunden werden");
             return false;
         }
 
         // Check if TZ_PROJEKT_MITARBEITER contains a user with the id we got from T_USER and wether any of the entries with that id also contain the proper project id
         if (!projektMitarbeiterList.Any(pm => pm.MitarbeiterId == userList.First(u => u.UniqueName == email).MitarbeiterId && pm.ProjektId == projectId))
         {
-            logService.Log(LogCategory.UserNotAuthorized, $"User with email {email} is not authorized to book on project with Id {projectId}.");
+            logService.Log(LogCategory.UserNotAuthorized, $"Benutzer mit Email {email} ist nicht authorisiert auf das Projekt mit Id {projectId} zu buchen");
             return false;
         }
 

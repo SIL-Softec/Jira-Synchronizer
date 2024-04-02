@@ -22,8 +22,7 @@ public class LoggingService
             {
                 using (StreamWriter sw = File.CreateText(path))
                 {
-                    DateTime logStart = DateTime.Now;
-                    sw.WriteLine($"[{logStart}]\tLogfile initialised\n");
+                    sw.WriteLine($"[{now}]\t[{(int)category}]\t{message}");
                 }
             }
         }

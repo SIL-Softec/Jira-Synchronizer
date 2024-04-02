@@ -35,7 +35,7 @@ public class ViewModelService
                 });
             } else
             {
-                logService.Log(LogCategory.Warning, "JiraProject does not contain JiraProject Id");
+                logService.Log(LogCategory.Error, "JiraProject enthält keine JiraProject Id");
             }
         }
         return leistungserfassungViewModels;

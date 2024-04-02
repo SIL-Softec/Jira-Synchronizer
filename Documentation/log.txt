@@ -1,0 +1,25 @@
+[02.04.2024 10:03:02]	[101]	Log Datei wurde initialisiert
+
+[02.04.2024 10:03:02]	[102]	Applikation wurde gestartet
+
+[02.04.2024 10:03:03]	[100]	Applikation läuft in Development Modus, Daten werden auf den Benutzer mit der Id 262 gespeichert
+
+[02.04.2024 10:03:05]	[400]	Eine Instanz der Applikation läuft bereits
+[02.04.2024 10:03:05]	[302]	Appllikation wurde abgebrochen
+
+[02.04.2024 10:03:23]	[100]	Issues wurden erfolgreich geladen
+
+[02.04.2024 10:04:45]	[100]	Worklogs wurden erfolgreich geladen
+
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email dominik.schenk@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email dominik.uebelhart@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email benno.wiss@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email dominic.ritz@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email benno.wiss@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email benno.wiss@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email benno.wiss@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[401]	Benutzer mit Email marco.luthiger@softec.ch konnte nicht gefunden werden
+[02.04.2024 10:04:45]	[100]	Worklogs wurden authorisiert und überprüft
+
+[02.04.2024 10:04:46]	[200]	Daten wurden erfolgreich importiert
+[02.04.2024 10:04:46]	[199]	Applikation wurde beendet

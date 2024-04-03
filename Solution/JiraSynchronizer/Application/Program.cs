@@ -16,9 +16,9 @@ namespace JiraSynchronizer.Application;
 public class Program
 {
     // ConnectionString ist in App.config als "default" definiert
-    private readonly static string defaultConnection = System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+    private static string defaultConnection;
     // Eine SQL Connection wird für alle Services erstellt
-    private static SqlConnection sqlConnection = new SqlConnection(defaultConnection);
+    private static SqlConnection sqlConnection;
     static async Task Main(string[] args)
     {
         // Initialize Services
@@ -40,6 +40,18 @@ public class Program
             logService.Log(LogCategory.LogfileInitialized, "Log Datei wurde initialisiert\n");
             logService.Log(LogCategory.ApplicationStarted, "Applikation wurde gestartet\n");
 
+            // Configure SQL Connection using App.config
+            if (System.Configuration.ConfigurationManager.ConnectionStrings["Default"] != null)
+            {
+                defaultConnection = System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+                sqlConnection = new SqlConnection(defaultConnection);
+            } else
+            {
+                logService.Log(LogCategory.Error, "Connection String ist undefiniert oder nicht gültig");
+                logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
+                return;
+            }
+
             // Configure appsettings
             IConfigurationRoot config;
             try
@@ -50,7 +62,7 @@ public class Program
                 config = builder.Build();
             } catch
             {
-                logService.Log(LogCategory.Error, "Datei \"appsettings.json\" konnte nicht gefunden werden");
+                logService.Log(LogCategory.Error, "Zwingend notwendige Datei \"appsettings.json\" konnte nicht gefunden werden");
                 logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
                 return;
             }
@@ -73,7 +85,17 @@ public class Program
             IssueController issueController = new IssueController();
             WorklogController worklogController = new WorklogController();
             // Initialize Database Controllers
-            sqlConnection.Open();
+            try
+            {
+                sqlConnection.Open();
+
+            } catch
+            {
+
+                logService.Log(LogCategory.Error, "Connection String ist undefiniert oder nicht gültig");
+                logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
+                return;
+            }
             LeistungserfassungController leistungserfassungController = new LeistungserfassungController(sqlConnection);
             WhitelistController whitelistController = new WhitelistController(sqlConnection);
             UserController userController = new UserController(sqlConnection);
@@ -86,7 +108,15 @@ public class Program
             // Alle issue keys der jeweiligen Projekte werden von der Jira REST API importiert
             foreach (JiraProjectViewModel project in jiraProjects)
             {
-                project.Issues = await issueController.GetIssuesAsync(project.ProjectName);
+                try
+                {
+                    project.Issues = await issueController.GetIssuesAsync(project.ProjectName);
+                } catch
+                {
+                    logService.Log(LogCategory.Error, "API-Token für die Jira API ist undefiniert oder ungültig");
+                    logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
+                    return;
+                }
             }
             logService.Log(LogCategory.Success, "Issues wurden erfolgreich geladen\n");
 
@@ -121,7 +151,7 @@ public class Program
                         worklog.JiraProjekt = project.ProjectName;
 
                         // Alle logs die authorisierte Nutzer haben und in der Datenbank noch nicht existieren werden in eine übersichtlichere Liste übertragen
-                        if (worklog.IsAuthorized && !worklog.ExistsOnDatabase) worklogs.Add(worklog);
+                        if (worklog.IsAuthorized && !worklog.ExistsOnDatabase || isDevelopment) worklogs.Add(worklog);
 
                         // Enthält ein worklog eine Leistung von >24h, wird eine Warnung in den Log geschrieben
                         if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(LogCategory.OvertimeWarning, $"Benutzer mit der Email \"{worklog.Email}\" hat über 24 Stunden an Issue \"{issue.IssueName}\" gearbeitet, Eintrag mit Startdatum \"{worklog.Started}\"\n");

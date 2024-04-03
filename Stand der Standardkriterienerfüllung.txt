@@ -1,47 +1,47 @@
 Standardkriterien
 - A1:  Projektmanagement und Planung
-	Y
+  GS:	3
 - A2:  Wissensbeschaffung
-	Y
+  GS:	2 (Nachweis der Wissensbeschaffung sollte zb in Arbeitsjournals noch klarer beschrieben werden)
 - A3:  Zeitplan
-	Y
+  GS:	2 (Soll/Ist-Vergleich noch nicht fertig)
 - A4:  Konzeptionelle Umsetzung
-	~
+  GS:	3
 - A5:  Projektumfeld: Systemgrenzen / Schnittstellen zur Aussenwelt
-	Y
+  GS:	3
 - A6:  Testkonzept
-	N
+  GS:	2 (Testkonzept begründet nicht was nicht getestet wird (Repository, Jira API))
 - A7:  Leistungsfähigkeit
-	Y
+  GS:	3 (ABER, zeitliche Vorgaben wurden teils unterschritten)
 - A8:  Selbstständiges Arbeiten
-	Y
+  GS:	3
 - A9:  Fachkenntnisse und Anwendungskompetenz
-	Basically luck
+  GS:	3
 - A10: Anwendung der Fachsprache
-	~
+  GS:	3
 - A11: Arbeits- und Fachmethodik
-	Y
+  GS:	3
 - A12: Organisation der Arbeitsergebnisse
-	Y
+  GS:	2 (Überprüfen ob Punkte 1-4 in der IPA beschrieben und nachvollziehbar sind)
 - A13: IPA-Erfüllungsgrad
-	N
+  GS:	3
 - B1:  Kurzfassung des IPA-Berichtes
-	N
+  GS:	0 (UNBEDINGT NOCHMAL ÜBERPRÜFEN, WEISS GERADE NICHT)
 - B2:  Führung des Arbeitsjournals
-	~
+  GS:	3 (Wissensbeschaffung nochmal anschauen)
 - B3:  Reflexionsfähigkeit
-	Y
+  GS:	0 (Lösungs-Varianten vergleichen, Schlusswort schreiben)
 - B4: Gliederung
-	Y
+  GS:	3
 - B5: Prägnanz
-	~
+  GS:	3
 - B6:  Formale Vollständigkeit des IPA-Berichts
-	Y
+  GS:	2 (Abkürzungen in Glossar erläutern)
 - B7:  Sprachlicher Ausdruck und Stil / Rechtschreibung und Grammatik
-	Basically luck
+  GS:	3 (IDK)
 - B8:  Darstellung
-	~
+  GS:	3
 - B9:  Grafiken, Bilder, Diagramme und Tabellen
-	~
+  GS:	2 (Einige Grafiken etwas zu detailliert, diese unbedingt dem Anhang beifügen! :o)
 - B10: Durchführung und Auswertung der Tests
-	N
+  GS:	3

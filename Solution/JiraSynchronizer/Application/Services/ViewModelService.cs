@@ -31,7 +31,7 @@ public class ViewModelService
                     Beschreibung = worklog.JiraProjekt,
                     InternBeschreibung = worklog.Comment,
                     Verrechenbar = projekte.First(p => p.Id == projektId).DefaultVerrechenbar == true,
-                    JiraProjectId = worklog.JiraBuchungId
+                    JiraProjectId = !isDevelopment ? worklog.JiraBuchungId : null
                 });
             } else
             {

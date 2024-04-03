@@ -1,6 +1,7 @@
 ﻿using JiraSynchronizer.Application.ViewModels;
 using JiraSynchronizer.Core.Entities;
 using JiraSynchronizer.Core.Interfaces;
+using JiraSynchronizer.Core.Services;
 using JiraSynchronizer.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace JiraSynchronizer.Application.Controllers;
 
 public class WorklogController
 {
+    private LoggingService logService = new LoggingService();
     private readonly IJiraRepository _jiraRepository;
     public WorklogController()
     {
@@ -41,6 +43,7 @@ public class WorklogController
                 IsAuthorized = worklog.IsAuthorized,
                 ExistsOnDatabase = worklog.ExistsOnDatabase
             });
+            if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(Core.Enums.LogCategory.Warning, $"Worklog vom {worklog.Started} enthält eine Buchung von über 24 Stunden");
         }
         return worklogViewModels;
     }

@@ -10,7 +10,7 @@ Standardkriterien
 - A5:  Projektumfeld: Systemgrenzen / Schnittstellen zur Aussenwelt
   GS:	3
 - A6:  Testkonzept
-  GS:	2 (Testkonzept begründet nicht was nicht getestet wird (Repository, Jira API))
+  GS:	3
 - A7:  Leistungsfähigkeit
   GS:	3 (ABER, zeitliche Vorgaben wurden teils unterschritten)
 - A8:  Selbstständiges Arbeiten
@@ -22,11 +22,11 @@ Standardkriterien
 - A11: Arbeits- und Fachmethodik
   GS:	3
 - A12: Organisation der Arbeitsergebnisse
-  GS:	2 (Überprüfen ob Punkte 1-4 in der IPA beschrieben und nachvollziehbar sind)
+  GS:	3
 - A13: IPA-Erfüllungsgrad
   GS:	3
 - B1:  Kurzfassung des IPA-Berichtes
-  GS:	0 (UNBEDINGT NOCHMAL ÜBERPRÜFEN, WEISS GERADE NICHT)
+  GS:	3
 - B2:  Führung des Arbeitsjournals
   GS:	3 (Wissensbeschaffung nochmal anschauen)
 - B3:  Reflexionsfähigkeit
@@ -36,12 +36,12 @@ Standardkriterien
 - B5: Prägnanz
   GS:	3
 - B6:  Formale Vollständigkeit des IPA-Berichts
-  GS:	2 (Abkürzungen in Glossar erläutern)
+  GS:	3
 - B7:  Sprachlicher Ausdruck und Stil / Rechtschreibung und Grammatik
-  GS:	3 (IDK)
+  GS:	3
 - B8:  Darstellung
   GS:	3
 - B9:  Grafiken, Bilder, Diagramme und Tabellen
-  GS:	2 (Einige Grafiken etwas zu detailliert, diese unbedingt dem Anhang beifügen! :o)
+  GS:	3 (Einige Grafiken etwas zu detailliert, diese unbedingt dem Anhang beifügen! :o)
 - B10: Durchführung und Auswertung der Tests
   GS:	3

@@ -51,7 +51,12 @@ public class LeistungserfassungRepository : EfRepository<Leistungserfassung>, ID
             int verrechenbar = leistungserfassungen[i].Verrechenbar == true ? 1 : 0;
             string beginnDate = leistungserfassungen[i].Beginn.ToString("yyyy-MM-dd hh:mm:ss");
             string endeDate = leistungserfassungen[i].Ende.ToString("yyyy-MM-dd hh:mm:ss");
-            sqlCommand += $"({leistungserfassungen[i].ProjektId}, {leistungserfassungen[i].MitarbeiterId}, 10, 1, '{beginnDate}', '{endeDate}', {leistungserfassungen[i].Stunden}, {verrechenbar}, '{leistungserfassungen[i].Beschreibung}', '{leistungserfassungen[i].InternBeschreibung}', 1, {leistungserfassungen[i].JiraProjectId})";
+            sqlCommand += $"({leistungserfassungen[i].ProjektId}, {leistungserfassungen[i].MitarbeiterId}, 10, 1, '{beginnDate}', '{endeDate}', {leistungserfassungen[i].Stunden}, {verrechenbar}, '{leistungserfassungen[i].Beschreibung}', '{leistungserfassungen[i].InternBeschreibung}', 1";
+            if (leistungserfassungen[i].JiraProjectId != null)
+            {
+                sqlCommand += $", {leistungserfassungen[i].JiraProjectId}";
+            }
+            sqlCommand += ")";
         }
         sqlCommand += ";";
         SqlCommand insertLeistungserfassungen = new SqlCommand(sqlCommand, Connection);

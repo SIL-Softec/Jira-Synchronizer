@@ -2,7 +2,7 @@ Standardkriterien
 - A1:  Projektmanagement und Planung
   GS:	3
 - A2:  Wissensbeschaffung
-  GS:	2 (Nachweis der Wissensbeschaffung sollte zb in Arbeitsjournals noch klarer beschrieben werden)
+  GS:	3
 - A3:  Zeitplan
   GS:	2 (Soll/Ist-Vergleich noch nicht fertig)
 - A4:  Konzeptionelle Umsetzung

@@ -1,11 +1,8 @@
 TODO (Dokumentation):
 - TODOs
-- Dokumentation (bis auf Arbeitsjournal) ins Präsens
-- Wissensbeschaffung im Arbeitsjournal ergänzen
-- Soll-Ist-Vergleich tagweise
 - Schlusswort
-- klassendiagramm untereinander aufgespalten
 - bei blocksätzen mit riesenabständen wörter trennen (gegen ende)
+- leis suchen und überall ausser beim ersten mal LEIS schreiben
 
 
 
@@ -14,16 +11,13 @@ TODO (Dokumentation):
 
 TODO (Applikation):
 - Wird Applikation abgebrochen / crasht sie, muss das im Log festgehalten werden
-- Wenn App.config fehlt soll das im Log als Error festgehalten werden und Applikation soll abgebrochen werden
 - Unit Tests für dev mode?
-- dev mode soll *ALLE* Zeiterfassungen importieren, *OHNE* worklog Id
 
 
 
 
 TODO (Ende):
 - Abbildungsverzeichnis Seiten
-- Log-Datei der Applikation beifügen
 - Grafiken beifügen
 
 

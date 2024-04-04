@@ -15,9 +15,9 @@ namespace JiraSynchronizer.Application;
 
 public class Program
 {
-    // ConnectionString ist in App.config als "default" definiert
+    // ConnectionString is defined in App.config as "Default"
     private static string defaultConnection;
-    // Eine SQL Connection wird für alle Services erstellt
+    // SQL Connection is readied for all DatabaseServices
     private static SqlConnection sqlConnection;
     static async Task Main(string[] args)
     {
@@ -26,7 +26,7 @@ public class Program
         LoggingService logService = new LoggingService();
         ViewModelService viewModelService = new ViewModelService();
 
-        // Mutex stellt sicher dass nur eine Instanz der Applikation auf einmal läuft
+        // Mutex ensures that only one instance of this application ever runs at any given time
         string mutex_id = "Jira Synchronizer";
         using (Mutex mutex = new Mutex(false, mutex_id))
         {
@@ -84,7 +84,8 @@ public class Program
             // Initialize Jira Controllers
             IssueController issueController = new IssueController();
             WorklogController worklogController = new WorklogController();
-            // Initialize Database Controllers
+
+            // Initialize Database Controllers and ready SQL Connection
             try
             {
                 sqlConnection.Open();
@@ -102,10 +103,10 @@ public class Program
             ProjektMitarbeiterController projektMitarbeiterController = new ProjektMitarbeiterController(sqlConnection);
             ProjektController projektController = new ProjektController(sqlConnection);
 
-            // Whitelist wird von der Datenbank importiert und in JiraProjectViewModel übersetzt
+            // Whitelist is imported from Database and translated into a JiraProjectViewModel
             List<JiraProjectViewModel> jiraProjects = viewModelService.GenerateJiraProjectViewModels(whitelistController.GetAllWhitelists());
 
-            // Alle issue keys der jeweiligen Projekte werden von der Jira REST API importiert
+            // All issue keys of projects present in "jiraProjects" are imported from Jira API
             foreach (JiraProjectViewModel project in jiraProjects)
             {
                 try
@@ -120,7 +121,7 @@ public class Program
             }
             logService.Log(LogCategory.Success, "Issues wurden erfolgreich geladen\n");
 
-            // Alle worklogs, jünger als sieben Tage, der jeweiligen Issues werden von der Jira REST API importiert
+            // All worklogs younger than seven days are imported from Jira API 
             foreach (JiraProjectViewModel project in jiraProjects)
             {
                 foreach (IssueViewModel issue in project.Issues)
@@ -130,14 +131,14 @@ public class Program
             }
             logService.Log(LogCategory.Success, "Worklogs wurden erfolgreich geladen\n");
 
-            // User und die Projekte auf welchen sie Berechtigungen haben werden importiert
+            // User and the projects they're authorized to write on are imported from Database
             List<UserViewModel> userList = userController.GetAllUsers();
             List<ProjektMitarbeiterViewModel> projektMitarbeiterList = projektMitarbeiterController.GetAllProjektMitarbeiters();
 
-            // Leistungen welche jünger als sieben Tage sind werden von der LEIS Datenbank importiert und in ein minimales ViewModel geschrieben welches nur die wichtigsten Daten enthält
+            // "Leistungen" younger than seven days are imported from LEIS DB and translated into ViewModel which contains only the most important data
             List<LeistungserfassungViewModel> minimaleLeistungserfassungen = leistungserfassungController.GetAllLeistungserfassungen();
 
-            // Bei allen worklogs wird geschrieben ob die User authorisiert sind und ob das worklog in der Datenbank schon vorhanden ist
+            // For each worklog authorization of their user is checked and it's checked if the worklog has already been saved to the LEIS DB in the past
             List<WorklogViewModel> worklogs = new List<WorklogViewModel>();
             foreach (JiraProjectViewModel project in jiraProjects)
             {
@@ -150,20 +151,21 @@ public class Program
                         worklog.ExistsOnDatabase = minimaleLeistungserfassungen.Any(ml => ml.JiraProjectId == worklog.JiraBuchungId);
                         worklog.JiraProjekt = project.ProjectName;
 
-                        // Alle logs die authorisierte Nutzer haben und in der Datenbank noch nicht existieren werden in eine übersichtlichere Liste übertragen
+                        // All worklogs with authorized users and which do not already exist on the LEIS DB are transferred to a list
+                        // If development mode is turned on, all worklogs, regardless of authorization or presence on LEIS DB are transferred to a list
                         if (worklog.IsAuthorized && !worklog.ExistsOnDatabase || isDevelopment) worklogs.Add(worklog);
 
-                        // Enthält ein worklog eine Leistung von >24h, wird eine Warnung in den Log geschrieben
+                        // If a worklog has a recorded time of over 24 hours, a warning is written into the log
                         if (((double)worklog.TimeSpentSeconds) / 3600 > 24) logService.Log(LogCategory.OvertimeWarning, $"Benutzer mit der Email \"{worklog.Email}\" hat über 24 Stunden an Issue \"{issue.IssueName}\" gearbeitet, Eintrag mit Startdatum \"{worklog.Started}\"\n");
                     }
                 }
             }
             logService.Log(LogCategory.Information, "Worklogs wurden authorisiert und überprüft\n");
 
-            // ProjektViewModels werden aus Datenbank geladen
+            // ProjektViewModels are imported from LEIS DB
             List<ProjektViewModel> projekte = projektController.GetAllProjekte();
 
-            // Worklogs werden in LeistungserfassungViewModels übertragen und auf der Datenbank als Leistungserfassungen gespeichert
+            // Worklogs are translated into LeistungserfassungViewModels and are saved on LEIS DB
             List<LeistungserfassungViewModel> leistungserfassungViewModels = viewModelService.GenerateLeistungserfassungViewModels(worklogs, userList, jiraProjects, projekte, devUser, isDevelopment);
             leistungserfassungController.AddLeistungserfassungen(leistungserfassungViewModels);
             logService.Log(LogCategory.Success, "Daten wurden erfolgreich importiert");

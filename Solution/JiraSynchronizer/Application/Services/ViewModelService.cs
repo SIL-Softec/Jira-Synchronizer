@@ -26,7 +26,7 @@ public class ViewModelService
                     ProjektId = projektId.Value,
                     MitarbeiterId = !isDevelopment ? userList.First(u => u.UniqueName == worklog.Email).MitarbeiterId : devUser != null ? devUser.Value : -1,
                     Beginn = worklog.Started,
-                    Ende = worklog.Started, // Worklogs haben nur ein Startdatum
+                    Ende = worklog.Started, // Worklogs only have a start date
                     Stunden = (double)worklog.TimeSpentSeconds / 3600,
                     Beschreibung = worklog.JiraProjekt,
                     InternBeschreibung = worklog.Comment,

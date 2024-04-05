@@ -1,10 +1,5 @@
 TODO (Dokumentation):
-- ABBILDUNGSVERZEICHNIS (Seitenzahlen)
-- bei blocksätzen mit riesenabständen wörter trennen (gegen ende)
-- potenziell soll-ist zeitplan?
-- formatierung überprüfen
-
-- STEFAN UM RÜCKMELDUNG FRAGEN
+- potenziell soll-ist zeitplan? !!!!!!!
 
 
 

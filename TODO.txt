@@ -1,24 +1,15 @@
 TODO (Dokumentation):
-- TODOs
-- Schlusswort
+- ABBILDUNGSVERZEICHNIS (Seitenzahlen)
 - bei blocksätzen mit riesenabständen wörter trennen (gegen ende)
-- leis suchen und überall ausser beim ersten mal LEIS schreiben
+- potenziell soll-ist zeitplan?
+- formatierung überprüfen
+
+- STEFAN UM RÜCKMELDUNG FRAGEN
 
 
 
 
 
-
-TODO (Applikation):
-- Wird Applikation abgebrochen / crasht sie, muss das im Log festgehalten werden
-- Unit Tests für dev mode?
-
-
-
-
-TODO (Ende):
-- Abbildungsverzeichnis Seiten
-- Grafiken beifügen
 
 
 Vor Präsentation: Powerpoint ausdrucken (2x) und den Experten geben! Und einmal hochladen

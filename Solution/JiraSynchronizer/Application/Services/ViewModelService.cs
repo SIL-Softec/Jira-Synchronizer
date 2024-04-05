@@ -28,14 +28,14 @@ public class ViewModelService
                     Beginn = worklog.Started,
                     Ende = worklog.Started, // Worklogs only have a start date
                     Stunden = (double)worklog.TimeSpentSeconds / 3600,
-                    Beschreibung = worklog.JiraProjekt,
+                    Beschreibung = worklog.IssueName,
                     InternBeschreibung = worklog.Comment,
                     Verrechenbar = projekte.First(p => p.Id == projektId).DefaultVerrechenbar == true,
                     JiraProjectId = !isDevelopment ? worklog.JiraBuchungId : null
                 });
             } else
             {
-                logService.Log(LogCategory.Error, "JiraProject enthält keine JiraProject Id");
+                logService.Log(LogCategory.Error, $"JiraProject enthält keine Buchung Id für Jira Projekt \"{worklog.JiraProjekt}\"");
             }
         }
         return leistungserfassungViewModels;

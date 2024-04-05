@@ -93,7 +93,7 @@ public class Program
             } catch
             {
 
-                logService.Log(LogCategory.Error, "Connection String ist undefiniert oder nicht gültig");
+                logService.Log(LogCategory.Error, "Connection String ist undefiniert oder ungültig");
                 logService.Log(LogCategory.ApplicationAborted, "Applikation wurde abgebrochen");
                 return;
             }
@@ -146,10 +146,10 @@ public class Program
                 {
                     foreach (WorklogViewModel worklog in issue.Worklogs)
                     {
-                        worklog.IsAuthorized = authService.IsAuthorized(userList, projektMitarbeiterList, worklog.Email, project.LeisProjectId);
-                        if (isDevelopment) worklog.IsAuthorized = true;
+                        worklog.IsAuthorized = !isDevelopment? authService.IsAuthorized(userList, projektMitarbeiterList, worklog.Email, project.LeisProjectId) : true;
                         worklog.ExistsOnDatabase = minimaleLeistungserfassungen.Any(ml => ml.JiraProjectId == worklog.JiraBuchungId);
                         worklog.JiraProjekt = project.ProjectName;
+                        worklog.IssueName = issue.IssueName;
 
                         // All worklogs with authorized users and which do not already exist on the LEIS DB are transferred to a list
                         // If development mode is turned on, all worklogs, regardless of authorization or presence on LEIS DB are transferred to a list
@@ -160,7 +160,7 @@ public class Program
                     }
                 }
             }
-            logService.Log(LogCategory.Information, "Worklogs wurden authorisiert und überprüft\n");
+            if (!isDevelopment) logService.Log(LogCategory.Information, "Worklogs wurden authorisiert und überprüft\n");
 
             // ProjektViewModels are imported from LEIS DB
             List<ProjektViewModel> projekte = projektController.GetAllProjekte();

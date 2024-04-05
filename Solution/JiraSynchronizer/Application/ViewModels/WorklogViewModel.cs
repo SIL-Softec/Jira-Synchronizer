@@ -14,6 +14,7 @@ public class WorklogViewModel
     public string Comment { get; set; }
     public long JiraBuchungId { get; set; }
     public string JiraProjekt { get; set; }
+    public string IssueName { get; set; }
     public bool IsAuthorized { get; set; }
     public bool ExistsOnDatabase { get; set; } = false;
 }

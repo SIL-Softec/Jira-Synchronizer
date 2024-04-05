@@ -30,7 +30,7 @@ Standardkriterien
 - B2:  Führung des Arbeitsjournals
   GS:	3 (Wissensbeschaffung nochmal anschauen)
 - B3:  Reflexionsfähigkeit
-  GS:	0 (Lösungs-Varianten vergleichen, Schlusswort schreiben)
+  GS:	3
 - B4: Gliederung
   GS:	3
 - B5: Prägnanz
